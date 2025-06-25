@@ -1,0 +1,15 @@
+{
+  "id": "f0718e24-37f0-489e-b284-e1cc336ca161",
+  "name": "1",
+  "description": "2",
+  "ref_audio_path": "data\\voice_clones\\f0718e24-37f0-489e-b284-e1cc336ca161\\reference.wav",
+  "ref_text": "hello",
+  "language": "en-US",
+  "speed": 1.0,
+  "sample_ids": [
+    "74cccf1a-ff78-4f09-a9c1-30178c7d5b58"
+  ],
+  "status": "ready",
+  "created_at": "2025-06-25T05:01:32.598188+00:00",
+  "model_type": "f5_tts"
+}

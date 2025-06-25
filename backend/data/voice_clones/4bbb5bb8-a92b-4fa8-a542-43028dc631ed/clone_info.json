@@ -1,0 +1,15 @@
+{
+  "id": "4bbb5bb8-a92b-4fa8-a542-43028dc631ed",
+  "name": "sb muzi",
+  "description": "",
+  "ref_audio_path": "data\\voice_clones\\4bbb5bb8-a92b-4fa8-a542-43028dc631ed\\reference.wav",
+  "ref_text": "Hello Everyone, I'm Jun, today is a beautiful day, perfect for taking a walk outside.",
+  "language": "en-US",
+  "speed": 1.0,
+  "sample_ids": [
+    "d37d67bf-043e-4c78-8983-8e09122a8609"
+  ],
+  "status": "ready",
+  "created_at": "2025-06-25T06:45:40.878560+00:00",
+  "model_type": "f5_tts"
+}

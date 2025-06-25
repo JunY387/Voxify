@@ -1,0 +1,15 @@
+{
+  "id": "305706b1-80ec-43b3-8c41-4291acb685b4",
+  "name": "v1",
+  "description": "",
+  "ref_audio_path": "data\\voice_clones\\305706b1-80ec-43b3-8c41-4291acb685b4\\reference.wav",
+  "ref_text": "Today is a good day.",
+  "language": "en-US",
+  "speed": 1.0,
+  "sample_ids": [
+    "1d13069e-379b-4248-ade7-982980155fcf"
+  ],
+  "status": "ready",
+  "created_at": "2025-06-25T17:52:06.009699+00:00",
+  "model_type": "f5_tts"
+}

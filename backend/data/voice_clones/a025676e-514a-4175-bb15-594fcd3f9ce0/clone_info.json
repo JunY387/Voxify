@@ -1,0 +1,15 @@
+{
+  "id": "a025676e-514a-4175-bb15-594fcd3f9ce0",
+  "name": "kikooo",
+  "description": "1",
+  "ref_audio_path": "data\\voice_clones\\a025676e-514a-4175-bb15-594fcd3f9ce0\\reference.wav",
+  "ref_text": "hello",
+  "language": "en-US",
+  "speed": 1.0,
+  "sample_ids": [
+    "dbad4b90-6880-4f96-b337-f53f8556bc22"
+  ],
+  "status": "ready",
+  "created_at": "2025-06-25T05:14:07.911073+00:00",
+  "model_type": "f5_tts"
+}

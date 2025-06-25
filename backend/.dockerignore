@@ -1,0 +1,31 @@
+# Cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+# Bytecode/build artifacts
+*.egg-info/
+.eggs/
+build/
+dist/
+.cache/
+.mypy_cache/
+.pytest_cache/
+
+# Environment/secrets
+.env
+.env.*
+*.db
+*.sqlite3
+*.log
+
+# OS/IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Test output and coverage
+htmlcov/
+.coverage
+coverage.xml
