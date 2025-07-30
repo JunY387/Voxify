@@ -55,7 +55,7 @@ class F5TTSService:
         self.use_remote = use_remote
         self.remote_api_url = os.getenv(
             "F5_TTS_REMOTE_URL",
-            "http://milaniez-cheetah.duckdns.org:8000/synthesize",
+            "http://70.36.58.224:8001/synthesize",
         )
         self.request_timeout = int(os.getenv("F5_TTS_TIMEOUT", "120"))  # 2 minutes default
 
