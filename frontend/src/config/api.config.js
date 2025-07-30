@@ -5,7 +5,7 @@ const config = {
     process.env.REACT_APP_API_BASE_URL ||
     (process.env.NODE_ENV === 'development'
       ? 'http://localhost:8000/api/v1' // Dev environment default
-      : process.env.REACT_APP_PROD_API_URL), // Production environment
+      : 'https://voxify-guxs.onrender.com/api/v1'), // Production environment
 
   // Development environment detection
   isDevelopment: process.env.NODE_ENV === 'development',
