@@ -68,7 +68,9 @@ def create_app(test_config=None):
             "https://voxify-prod.vercel.app",  # Production Vercel deployment
             "https://voxify-dev.vercel.app",  # Development Vercel deployment
             "https://voxify-livid.vercel.app",
-            "https://voxify-hea9ojq5p-jun-yangs-projects-f7853876.vercel.app",
+            "https://voxify-*.vercel.app"
+            "https://voxify-63wjpkvos-jun-yangs-projects-f7853876.vercel.app",
+            "https://voxify-git-main-jun-yangs-projects-f7853876.vercel.app",
         ],
         methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
         allow_headers=["Content-Type", "Authorization", "Accept"],
