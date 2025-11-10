@@ -57,7 +57,8 @@ image = (
     image=image,
     gpu="T4",
     timeout=600,
-    container_idle_timeout=120,
+    scaledown_window=300,
+    min_containers=1,
     memory=8192,  # 8GB memory for model loading
 )
 @modal.asgi_app()

@@ -11,6 +11,10 @@ import ssl
 import argparse
 from api import create_app
 
+DEFAULT_F5_TTS_REMOTE_URL = (
+    "https://nnnnnjun-yang--f5-tts-voxify-fastapi-app.modal.run/synthesize"
+)
+
 # Add the backend directory to Python path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -45,6 +49,12 @@ def init_file_storage():
 
     print("File storage initialization successful!")
     return True
+
+
+def configure_remote_f5_tts():
+    """Ensure F5-TTS requests are routed to the Modal-hosted service by default."""
+    os.environ.setdefault("F5_TTS_REMOTE_URL", DEFAULT_F5_TTS_REMOTE_URL)
+    os.environ.setdefault("F5_TTS_USE_REMOTE", "true")
 
 
 def init_database():
@@ -223,6 +233,9 @@ def start_flask_app(skip_db_init=False, skip_file_init=False, seed_data=False, u
         if not seed_database():
             print("Database seeding failed, but continuing with server startup")
         print()  # Empty line separator
+
+    # Configure F5-TTS to use the remote Modal service by default
+    configure_remote_f5_tts()
 
     # Create Flask app
     app = create_app()

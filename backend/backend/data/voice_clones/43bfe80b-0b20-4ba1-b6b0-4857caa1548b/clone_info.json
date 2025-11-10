@@ -1,0 +1,16 @@
+{
+  "id": "43bfe80b-0b20-4ba1-b6b0-4857caa1548b",
+  "name": "Jun",
+  "description": "",
+  "ref_audio_path": "backend\\data\\voice_clones\\43bfe80b-0b20-4ba1-b6b0-4857caa1548b\\reference.wav",
+  "ref_text": "阅读是我最喜欢的休闲活动之一。",
+  "language": "zh-CN",
+  "speed": 1.0,
+  "clone_type": "record",
+  "sample_ids": [
+    "5fbeb40d-3732-44f9-aefd-777c6a8490aa"
+  ],
+  "status": "ready",
+  "created_at": "2025-11-09T23:16:23.223677+00:00",
+  "model_type": "f5_tts"
+}
