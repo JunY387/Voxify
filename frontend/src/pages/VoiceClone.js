@@ -13,7 +13,6 @@ const VoiceClone = () => {
   const [refText, setRefText] = useState('');
   const [language, setLanguage] = useState('zh-CN');
   const [files, setFiles] = useState([]);
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   
@@ -102,8 +101,6 @@ const VoiceClone = () => {
 
     setIsCreating(true);
     setIsUploading(true);
-    setUploadProgress(0);
-
     try {
       const uploadedIds = [];
       
@@ -129,7 +126,6 @@ const VoiceClone = () => {
           alert(`Failed to upload ${file.name}: ${error.message || error}`);
           return;
         }
-        setUploadProgress(((i + 1) / filesToProcess.length) * 100);
       }
 
       const result = await voiceCloneService.createVoiceClone({

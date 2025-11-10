@@ -124,7 +124,7 @@ class JobService {
         throw new Error('No authentication token found');
       }
 
-      const response = await api.delete(`/job/${jobId}`, {
+      await api.delete(`/job/${jobId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

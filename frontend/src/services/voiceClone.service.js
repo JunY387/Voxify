@@ -208,24 +208,6 @@ class VoiceCloneService {
     }
   }
 
-  async deleteVoiceClone(cloneId) {
-    try {
-      const token = localStorage.getItem('access_token');
-      if (!token) {
-        throw new Error('No authentication token found');
-      }
-
-      const response = await api.delete(`/voice/clones/${cloneId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      return response.data;
-    } catch (error) {
-      throw error.response?.data?.error || error;
-    }
-  }
 }
 
 const voiceCloneService = new VoiceCloneService();

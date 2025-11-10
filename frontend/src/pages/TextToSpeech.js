@@ -17,7 +17,6 @@ const TextToSpeech = () => {
     language: 'en-US',
   });
   const [isGenerating, setIsGenerating] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [generatedAudio, setGeneratedAudio] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
@@ -155,25 +154,12 @@ const TextToSpeech = () => {
     setIsGenerating(true);
 
     try {
-      // Simulate progress while actually generating
-      const progressInterval = setInterval(() => {
-        setProgress((prev) => {
-          if (prev >= 90) {
-            clearInterval(progressInterval);
-            return 90;
-          }
-          return prev + 10;
-        });
-      }, 500);
-
       // Only use voice clone synthesis
       const result = await voiceCloneService.synthesizeWithClone(voice, text, {
         language: config.language,
         outputFormat: config.outputFormat,
         sampleRate: config.sampleRate,
       });
-
-      setProgress(100);
 
       if (result.success) {
         // Store generated audio information
@@ -192,7 +178,6 @@ const TextToSpeech = () => {
       alert(`Failed to generate speech: ${error.message || error}`);
     } finally {
       setIsGenerating(false);
-      setProgress(0);
     }
   };
 
