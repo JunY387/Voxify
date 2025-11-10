@@ -116,6 +116,7 @@ def create_app(test_config=None):
             "https://test-lemon-eight-27.vercel.app",
             "https://voxify-prod.vercel.app",  # Production Vercel deployment
             "https://voxify-dev.vercel.app",  # Development Vercel deployment
+            "https://voxify-jun-self-deploy-version.vercel.app",  # Current Vercel deployment
         ],
         methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
         allow_headers=["Content-Type", "Authorization", "Accept"],
