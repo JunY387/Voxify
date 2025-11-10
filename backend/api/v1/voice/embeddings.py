@@ -8,21 +8,111 @@ from typing import Tuple, Optional
 import torch
 from pathlib import Path
 import uuid
+import base64
+import os
+import requests
 from resemblyzer import VoiceEncoder, preprocess_wav
 import soundfile as sf
 from database.vector_config import create_vector_db
 
 
-# Initialize Resemblyzer voice encoder
+# Initialize Resemblyzer voice encoder (local fallback)
 voice_encoder = VoiceEncoder()
 
 # Get the existing ChromaVectorDB instance
 vector_db = create_vector_db()
 
+# Modal remote embedding service configuration
+VOICE_EMBED_USE_REMOTE = os.getenv("VOICE_EMBED_USE_REMOTE", "true").lower() == "true"
+VOICE_EMBED_REMOTE_URL = os.getenv(
+    "VOICE_EMBED_REMOTE_URL",
+    "https://nnnnnjun-yang--voxify-voice-embed-fastapi-app.modal.run/extract_embedding"
+)
+VOICE_EMBED_TIMEOUT = int(os.getenv("VOICE_EMBED_TIMEOUT", "60"))
+
+
+def _generate_embedding_remote(audio_path: str) -> np.ndarray:
+    """
+    Generate voice embedding using remote Modal service.
+    
+    Args:
+        audio_path: Path to the audio file
+        
+    Returns:
+        Embedding vector as numpy array
+    """
+    try:
+        print(f"[DEBUG] Generating embedding via REMOTE Modal service...")
+        print(f"[DEBUG] Remote URL: {VOICE_EMBED_REMOTE_URL}")
+        
+        # Read audio file and encode to base64
+        with open(audio_path, 'rb') as f:
+            audio_bytes = f.read()
+        audio_b64 = base64.b64encode(audio_bytes).decode('utf-8')
+        print(f"[DEBUG] Encoded audio size: {len(audio_b64)} characters")
+        
+        # Prepare request payload
+        payload = {
+            "audio_b64": audio_b64,
+            "sample_rate": 16000
+        }
+        
+        # Call remote API
+        response = requests.post(
+            VOICE_EMBED_REMOTE_URL,
+            json=payload,
+            timeout=VOICE_EMBED_TIMEOUT
+        )
+        
+        if response.status_code != 200:
+            error_detail = response.json().get('detail', 'Unknown error') if response.text else 'No response'
+            raise Exception(f"Remote API returned status {response.status_code}: {error_detail}")
+        
+        # Parse response
+        result = response.json()
+        embedding_list = result.get('embedding')
+        if not embedding_list:
+            raise Exception("Remote API did not return embedding data")
+        
+        embedding = np.array(embedding_list)
+        print(f"[DEBUG] Remote embedding generated successfully, shape: {embedding.shape}")
+        
+        return embedding
+        
+    except requests.exceptions.Timeout:
+        raise Exception(f"Remote embedding API timed out after {VOICE_EMBED_TIMEOUT} seconds")
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"Remote embedding API request failed: {str(e)}")
+    except Exception as e:
+        raise Exception(f"Remote embedding generation failed: {str(e)}")
+
+
+def _generate_embedding_local(audio_path: str) -> np.ndarray:
+    """
+    Generate voice embedding using local Resemblyzer.
+    
+    Args:
+        audio_path: Path to the audio file
+        
+    Returns:
+        Embedding vector as numpy array
+    """
+    print(f"[DEBUG] Generating embedding via LOCAL Resemblyzer...")
+    
+    # Load and preprocess audio
+    wav = preprocess_wav(audio_path)
+    print(f"[DEBUG] Preprocessed audio shape: {wav.shape}")
+    
+    # Generate embedding
+    embedding = voice_encoder.embed_utterance(wav)
+    print(f"[DEBUG] Local embedding generated successfully, shape: {embedding.shape}")
+    
+    return embedding
+
 
 def generate_voice_embedding(audio_path: str, user_id: str = None, **extra_metadata) -> Tuple[str, np.ndarray]:
     """
-    Generate voice embedding from audio file using Resemblyzer.
+    Generate voice embedding from audio file using Resemblyzer (Remote or Local).
 
     Args:
         audio_path: Path to the audio file
@@ -35,14 +125,21 @@ def generate_voice_embedding(audio_path: str, user_id: str = None, **extra_metad
     """
     try:
         print(f"[DEBUG] Generating embedding for: {audio_path}")
+        print(f"[DEBUG] Mode: {'REMOTE (Modal)' if VOICE_EMBED_USE_REMOTE else 'LOCAL (CPU)'}")
 
-        # Load and preprocess audio
-        wav = preprocess_wav(audio_path)
-        print(f"[DEBUG] Preprocessed audio shape: {wav.shape}")
-
-        # Generate embedding
-        embedding = voice_encoder.embed_utterance(wav)
+        # Generate embedding (remote or local)
+        if VOICE_EMBED_USE_REMOTE:
+            try:
+                embedding = _generate_embedding_remote(audio_path)
+            except Exception as e:
+                print(f"[DEBUG] Remote embedding failed: {e}")
+                print(f"[DEBUG] Falling back to local embedding...")
+                embedding = _generate_embedding_local(audio_path)
+        else:
+            embedding = _generate_embedding_local(audio_path)
+        
         print(f"[DEBUG] Generated embedding shape: {embedding.shape}")
+        
         # Store in ChromaDB using the existing vector_db
         embedding_id = str(uuid.uuid4())
         print(f"[DEBUG] Storing embedding with ID: {embedding_id}")

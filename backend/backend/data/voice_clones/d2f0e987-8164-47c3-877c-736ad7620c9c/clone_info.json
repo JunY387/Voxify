@@ -1,0 +1,16 @@
+{
+  "id": "d2f0e987-8164-47c3-877c-736ad7620c9c",
+  "name": "Jun2",
+  "description": "",
+  "ref_audio_path": "backend\\data\\voice_clones\\d2f0e987-8164-47c3-877c-736ad7620c9c\\reference.wav",
+  "ref_text": "阅读是我最喜欢的休闲活动之一。",
+  "language": "zh-CN",
+  "speed": 1.0,
+  "clone_type": "record",
+  "sample_ids": [
+    "0252cd48-5ba3-4517-894c-e4b8d72d21dd"
+  ],
+  "status": "ready",
+  "created_at": "2025-11-10T04:05:45.021682+00:00",
+  "model_type": "f5_tts"
+}

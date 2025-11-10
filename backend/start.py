@@ -14,6 +14,9 @@ from api import create_app
 DEFAULT_F5_TTS_REMOTE_URL = (
     "https://nnnnnjun-yang--f5-tts-voxify-fastapi-app.modal.run/synthesize"
 )
+DEFAULT_VOICE_EMBED_REMOTE_URL = (
+    "https://nnnnnjun-yang--voxify-voice-embed-fastapi-app.modal.run/extract_embedding"
+)
 
 # Add the backend directory to Python path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -55,6 +58,14 @@ def configure_remote_f5_tts():
     """Ensure F5-TTS requests are routed to the Modal-hosted service by default."""
     os.environ.setdefault("F5_TTS_REMOTE_URL", DEFAULT_F5_TTS_REMOTE_URL)
     os.environ.setdefault("F5_TTS_USE_REMOTE", "true")
+
+
+def configure_remote_voice_embed():
+    """Ensure voice embedding requests are routed to the Modal-hosted service by default."""
+    os.environ.setdefault("VOICE_EMBED_REMOTE_URL", DEFAULT_VOICE_EMBED_REMOTE_URL)
+    os.environ.setdefault("VOICE_EMBED_USE_REMOTE", "true")
+    print(f"Configured VOICE_EMBED_REMOTE_URL to: {os.getenv('VOICE_EMBED_REMOTE_URL')}")
+    print(f"Configured VOICE_EMBED_USE_REMOTE to: {os.getenv('VOICE_EMBED_USE_REMOTE')}")
 
 
 def init_database():
@@ -234,8 +245,9 @@ def start_flask_app(skip_db_init=False, skip_file_init=False, seed_data=False, u
             print("Database seeding failed, but continuing with server startup")
         print()  # Empty line separator
 
-    # Configure F5-TTS to use the remote Modal service by default
+    # Configure remote Modal services by default
     configure_remote_f5_tts()
+    configure_remote_voice_embed()
 
     # Create Flask app
     app = create_app()
