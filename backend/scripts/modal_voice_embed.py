@@ -14,7 +14,15 @@ app = modal.App("voxify-voice-embed")
 # Define the container image with resemblyzer
 image = (
     modal.Image.debian_slim(python_version="3.10")
-    .apt_install("ffmpeg", "libsndfile1")
+    .apt_install(
+        "ffmpeg", 
+        "libsndfile1", 
+        "libsndfile1-dev",
+        "libavcodec-extra",
+        "libavformat-dev",
+        "libavutil-dev",
+        "libswresample-dev"
+    )
     .pip_install(
         [
             "resemblyzer==0.1.4",
@@ -22,8 +30,10 @@ image = (
             "soundfile==0.12.1",
             "numpy==1.26.4",
             "torch>=2.0.0",
+            "torchaudio>=2.0.0",
             "fastapi",
             "pydantic",
+            "audioread",  # Additional audio backend for librosa
         ]
     )
 )
