@@ -43,8 +43,8 @@ image = (
     image=image,
     cpu=2.0,  # resemblyzer is CPU-based, 2 vCPU is sufficient
     timeout=300,
-    scaledown_window=300,
-    min_containers=1,
+    scaledown_window=300,  # 5分钟无活动后自动缩容
+    min_containers=0,  # 无请求时完全停止，按需启动
     memory=2048,  # 2GB memory
 )
 @modal.asgi_app()
