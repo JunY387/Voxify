@@ -19,9 +19,9 @@ const config = {
 };
 
 // Validate production URL
-if (!config.isDevelopment && !process.env.REACT_APP_PROD_API_URL) {
+if (!config.isDevelopment && !config.apiBaseUrl) {
   console.error(
-    'Production API URL not configured! Please set REACT_APP_PROD_API_URL environment variable.'
+    'Production API URL not configured! Please set REACT_APP_API_BASE_URL or REACT_APP_PROD_API_URL environment variable.'
   );
 }
 

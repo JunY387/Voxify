@@ -103,6 +103,9 @@ def create_app(test_config=None):
     )
 
     # Configure CORS to allow frontend access
+    # Flask-CORS treats entries containing regex characters as regular expressions,
+    # so wildcards must be written as regex (e.g. r"https://.*\.vercel\.app").
+    extra_origins = [o.strip() for o in os.getenv("CORS_ORIGINS", "").split(",") if o.strip()]
     CORS(
         app,
         origins=[
@@ -111,12 +114,14 @@ def create_app(test_config=None):
             "http://localhost:3001",  # Alternative ports
             "http://127.0.0.1:3001",
             "https://voxify.vercel.app",  # Vercel production
-            "https://*.vercel.app",  # All Vercel preview deployments
+            r"https://voxify[a-z0-9-]*\.vercel\.app",  # Voxify project deployments
+            r"https://[a-z0-9-]+-jun-yangs-projects-f7853876\.vercel\.app",  # Vercel preview deployments
             "https://test-ho72cndbz-jun-yangs-projects-f7853876.vercel.app",
             "https://test-lemon-eight-27.vercel.app",
             "https://voxify-prod.vercel.app",  # Production Vercel deployment
             "https://voxify-dev.vercel.app",  # Development Vercel deployment
             "https://voxify-jun-self-deploy-version.vercel.app",  # Current Vercel deployment
+            *extra_origins,
         ],
         methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
         allow_headers=["Content-Type", "Authorization", "Accept"],
